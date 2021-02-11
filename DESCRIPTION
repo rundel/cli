@@ -39,3 +39,5 @@ Suggests:
     testthat,
     withr
 Encoding: UTF-8
+Config/testthat/edition: 3
+Config/testthat/parallel: true
