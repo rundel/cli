@@ -4,644 +4,715 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>cli progress bar benchmark • cli</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="cli progress bar benchmark">
-<meta property="og:description" content="cli">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.9/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.9/font.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="cli progress bar benchmark">
 <meta name="robots" content="noindex">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script defer data-domain="cli.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">cli</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">3.0.0.9000</span>
-      </span>
-    </div>
+<body>
+    <a href="#container" class="visually-hidden-focusable">Skip to content</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/faq.html">FAQ</a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/semantic-cli.html">Building a Semantic CLI</a>
-    </li>
-    <li>
-      <a href="../articles/usethis-ui.html">From usethis::ui Functions to cli</a>
-    </li>
-    <li>
-      <a href="../articles/pluralization.html">cli Pluralization</a>
-    </li>
-    <li>
-      <a href="../articles/progress.html">Introduction to Progress Bars in cli</a>
-    </li>
-    <li>
-      <a href="../articles/progress-advanced.html">Advanced cli Progress Bars</a>
-    </li>
-    <li>
-      <a href="../articles/rules-boxes-trees.html">Rules, Boxes and Trees</a>
-    </li>
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-none" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
+    <a class="navbar-brand me-2" href="../index.html">cli</a>
+
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.6.3.9000</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/faq.html">FAQ</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/semantic-cli.html">Building a Semantic CLI</a></li>
+    <li><a class="dropdown-item" href="../articles/usethis-ui.html">From usethis::ui functions to cli</a></li>
+    <li><a class="dropdown-item" href="../articles/pluralization.html">cli pluralization</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Progress bars</h6></li>
+    <li><a class="dropdown-item" href="../articles/progress.html">Introduction to progress bars in cli</a></li>
+    <li><a class="dropdown-item" href="../articles/progress-advanced.html">Advanced cli progress bars</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Customization</h6></li>
+    <li><a class="dropdown-item" href="../articles/palettes.html">cli color palettes</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/index.html">More articles...</a></li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/r-lib/cli/">
-    <span class="fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/cli/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article" id="container">
 
-      
 
-      </header><script src="progress-benchmark_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>cli progress bar benchmark</h1>
-                        <h4 class="author">Gábor Csárdi</h4>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+
+      <h1>cli progress bar benchmark</h1>
+                        <h4 data-toc-skip class="author">Gábor
+Csárdi</h4>
             
-            <h4 class="date">2021-07-05</h4>
+            <h4 data-toc-skip class="date">2024-08-15</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/cli/blob/master/vignettes/progress-benchmark.Rmd"><code>vignettes/progress-benchmark.Rmd</code></a></small>
-      <div class="hidden name"><code>progress-benchmark.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/cli/blob/master/vignettes/progress-benchmark.Rmd" class="external-link"><code>vignettes/progress-benchmark.Rmd</code></a></small>
+      <div class="d-none name"><code>progress-benchmark.Rmd</code></div>
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>We make sure that the timer is not <code>TRUE</code>, by setting it to ten hours.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cli.r-lib.org">cli</a></span><span class="op">)</span>
-<span class="co"># 10 hours</span>
-<span class="fu">cli</span><span class="fu">:::</span><span class="fu">cli_tick_set</span><span class="op">(</span><span class="fl">10</span> <span class="op">*</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">1000</span><span class="op">)</span>
-<span class="fu"><a href="../reference/cli_progress_bar.html">cli_tick_reset</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; NULL</span>
-<span class="va">`__cli_update_due`</span>
-<span class="co">#&gt; [1] FALSE</span></code></pre></div>
-</div>
-<div id="r-benchmarks" class="section level1">
-<h1 class="hasAnchor">
-<a href="#r-benchmarks" class="anchor"></a>R benchmarks</h1>
-<div id="the-timer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-timer" class="anchor"></a>The timer</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="cn">NULL</span>
-<span class="va">ben_st</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span>
-  <span class="va">`__cli_update_due`</span>,
-  <span class="fu">fun</span><span class="op">(</span><span class="op">)</span>,
-  <span class="fu"><a href="https://rdrr.io/r/base/CallExternal.html">.Call</a></span><span class="op">(</span><span class="va">ccli_tick_reset</span><span class="op">)</span>,
-  <span class="fu"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span><span class="op">(</span><span class="op">)</span>,
-  check <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-<span class="va">ben_st</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 4 x 6[39m</span>
-<span class="co">#&gt;   expression                  min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m             [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m __cli_update_due           44ns     61ns 10[4m4[24m[4m3[24m[4m1[24m880.        0B        0</span>
-<span class="co">#&gt; [38;5;250m2[39m fun()                     479ns    549ns  1[4m1[24m[4m3[24m[4m9[24m264.        0B        0</span>
-<span class="co">#&gt; [38;5;250m3[39m .Call(ccli_tick_reset)    383ns    458ns  2[4m0[24m[4m1[24m[4m5[24m373.        0B        0</span>
-<span class="co">#&gt; [38;5;250m4[39m interactive()              96ns    122ns  6[4m7[24m[4m8[24m[4m3[24m395.        0B        0</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_st2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">`__cli_update_due`</span><span class="op">)</span> <span class="fu">foobar</span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">ben_st2</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 1 x 6[39m</span>
-<span class="co">#&gt;   expression                            min  median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m                       [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:t&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m if (`__cli_update_due`) foobar()    177ns   211ns  3[4m8[24m[4m9[24m[4m5[24m885.        0B        0</span></code></pre></div>
-</div>
-<div id="cli_progress_along" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cli_progress_along" class="anchor"></a><code>cli_progress_along()</code>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
+<p>We make sure that the timer is not <code>TRUE</code>, by setting it
+to ten hours.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cli.r-lib.org">cli</a></span><span class="op">)</span></span>
+<span><span class="co"># 10 hours</span></span>
+<span><span class="fu">cli</span><span class="fu">:::</span><span class="fu">cli_tick_set</span><span class="op">(</span><span class="fl">10</span> <span class="op">*</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_tick_reset</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="va">`__cli_update_due`</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="r-benchmarks">R benchmarks<a class="anchor" aria-label="anchor" href="#r-benchmarks"></a>
+</h2>
+<div class="section level3">
+<h3 id="the-timer">The timer<a class="anchor" aria-label="anchor" href="#the-timer"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="cn">NULL</span></span>
+<span><span class="va">ben_st</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span></span>
+<span>  <span class="va">`__cli_update_due`</span>,</span>
+<span>  <span class="fu">fun</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/CallExternal.html" class="external-link">.Call</a></span><span class="op">(</span><span class="va">ccli_tick_reset</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  check <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ben_st</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 6</span></span></span>
+<span><span class="co">#&gt;   expression                  min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> __cli_update_due         8.85ns   19.9ns 50<span style="text-decoration: underline;">983</span>621.        0B        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fun()                  140.05ns  160.1ns  4<span style="text-decoration: underline;">577</span>198.        0B        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> .Call(ccli_tick_reset) 120.02ns    140ns  7<span style="text-decoration: underline;">114</span>703.        0B        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> interactive()            8.96ns     20ns 55<span style="text-decoration: underline;">936</span>508.        0B        0</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ben_st2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">`__cli_update_due`</span><span class="op">)</span> <span class="fu">foobar</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ben_st2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
+<span><span class="co">#&gt;   expression                       min median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;bch&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> if (`__cli_update_due`) fooba…  40ns 51.1ns 17<span style="text-decoration: underline;">763</span>290.        0B        0</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="cli_progress_along">
+<code>cli_progress_along()</code><a class="anchor" aria-label="anchor" href="#cli_progress_along"></a>
+</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100000</span>
-<span class="va">ta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cli_progress_along.html">cli_progress_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>
-<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="va">seq</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">ta</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 2 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m seq[[1]]      425ns    526ns  1[4m1[24m[4m7[24m[4m8[24m705.        0B       0 </span>
-<span class="co">#&gt; [38;5;250m2[39m ta[[1]]       461ns    581ns  1[4m3[24m[4m8[24m[4m1[24m232.        0B     138.</span></code></pre></div>
-<div id="for-loop" class="section level3">
-<h3 class="hasAnchor">
-<a href="#for-loop" class="anchor"></a><code>for</code> loop</h3>
+<code class="sourceCode R"><span><span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100000</span></span>
+<span><span class="va">ta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cli_progress_along.html">cli_progress_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span></span>
+<span><span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="va">seq</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">ta</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> seq[[1]]      131ns    160ns  6<span style="text-decoration: underline;">062</span>551.        0B        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> ta[[1]]       160ns    180ns  5<span style="text-decoration: underline;">437</span>796.        0B        0</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="for-loop">
+<code>for</code> loop<a class="anchor" aria-label="anchor" href="#for-loop"></a>
+</h4>
 <p>This is the baseline:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">seq</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span>
-  <span class="va">x</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">seq</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>With progress bars:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="../reference/cli_progress_along.html">cli_progress_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span>
-  <span class="va">x</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="../reference/cli_progress_along.html">cli_progress_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Overhead per iteration:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_taf</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">ben_taf</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 2 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0()         17.1ms   17.5ms      57.3    96.8KB     630.</span>
-<span class="co">#&gt; [38;5;250m2[39m fp()         27.6ms   27.6ms      36.2   133.5KB     616.</span>
-<span class="op">(</span><span class="va">ben_taf</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_taf</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span>
-<span class="co">#&gt; [1] 101ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_taf</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ben_taf</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0()         12.1ms   12.3ms      81.2    25.1KB     365.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fp()         13.7ms   13.9ms      71.0    83.1KB     355.</span></span>
+<span><span class="op">(</span><span class="va">ben_taf</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_taf</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span></span>
+<span><span class="co">#&gt; [1] 16ns</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_taf2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_taf2</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 2 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0(1e+06)     198ms    206ms      4.92        0B     44.3</span>
-<span class="co">#&gt; [38;5;250m2[39m fp(1e+06)     228ms    274ms      3.65    1.13KB     34.7</span>
-<span class="op">(</span><span class="va">ben_taf2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_taf2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span>
-<span class="co">#&gt; [1] 68ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_taf2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_taf2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0(1e+06)     132ms    146ms      6.39        0B     51.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fp(1e+06)     145ms    147ms      6.80    1.79KB     56.1</span></span>
+<span><span class="op">(</span><span class="va">ben_taf2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_taf2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span></span>
+<span><span class="co">#&gt; [1] 1.18ns</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_taf3</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e7</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e7</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_taf3</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 2 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0(1e+07)     2.25s    2.25s     0.445        0B     41.4</span>
-<span class="co">#&gt; [38;5;250m2[39m fp(1e+07)     2.28s    2.28s     0.438    1.13KB     40.7</span>
-<span class="op">(</span><span class="va">ben_taf3</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_taf3</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e7</span>
-<span class="co">#&gt; [1] 3.37ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_taf3</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e7</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_taf3</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0(1e+07)     1.44s    1.44s     0.697        0B     58.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fp(1e+07)     1.51s    1.51s     0.664    1.79KB     55.1</span></span>
+<span><span class="op">(</span><span class="va">ben_taf3</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_taf3</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e7</span></span>
+<span><span class="co">#&gt; [1] 7.12ns</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_taf4</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e8</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e8</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_taf4</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 2 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0(1e+08)     19.9s    19.9s    0.050[4m2[24m        0B     29.3</span>
-<span class="co">#&gt; [38;5;250m2[39m fp(1e+08)     22.8s    22.8s    0.043[4m8[24m    1.13KB     24.5</span>
-<span class="op">(</span><span class="va">ben_taf4</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_taf4</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e8</span>
-<span class="co">#&gt; [1] 29.2ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_taf4</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e8</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e8</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_taf4</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0(1e+08)     13.4s    13.4s    0.074<span style="text-decoration: underline;">4</span>        0B     37.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fp(1e+08)     14.4s    14.4s    0.069<span style="text-decoration: underline;">4</span>    1.79KB     34.4</span></span>
+<span><span class="op">(</span><span class="va">ben_taf4</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_taf4</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e8</span></span>
+<span><span class="co">#&gt; [1] 9.63ns</span></span></code></pre></div>
 </div>
-<div id="mapping-with-lapply" class="section level3">
-<h3 class="hasAnchor">
-<a href="#mapping-with-lapply" class="anchor"></a>Mapping with lapply</h3>
+<div class="section level4">
+<h4 id="mapping-with-lapply">Mapping with <code>lapply()</code><a class="anchor" aria-label="anchor" href="#mapping-with-lapply"></a>
+</h4>
 <p>This is the baseline:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>
-  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">seq</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
+<span>  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">seq</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>With an index vector:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f01</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>
-  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">f01</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
+<span>  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>With progress bars:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>
-  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/cli_progress_along.html">cli_progress_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
+<span>  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/cli_progress_along.html">cli_progress_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Overhead per iteration:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_tam</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">f01</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_tam</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 3 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0()          126ms    185ms      5.07     781KB     13.5</span>
-<span class="co">#&gt; [38;5;250m2[39m f01()         134ms    145ms      6.94     781KB     10.4</span>
-<span class="co">#&gt; [38;5;250m3[39m fp()          161ms    179ms      5.23     782KB     12.2</span>
-<span class="op">(</span><span class="va">ben_tam</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_tam</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span>
-<span class="co">#&gt; [1] 1ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_tam</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">f01</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_tam</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0()         73.7ms   81.7ms     11.9      781KB     25.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> f01()        91.1ms  118.6ms      7.46     781KB     14.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fp()           98ms  107.3ms      8.70     783KB     15.7</span></span>
+<span><span class="op">(</span><span class="va">ben_tam</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_tam</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span></span>
+<span><span class="co">#&gt; [1] 256ns</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_tam2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">f01</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_tam2</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 3 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0(1e+06)     2.18s    2.18s     0.459    7.63MB     1.84</span>
-<span class="co">#&gt; [38;5;250m2[39m f01(1e+06)    1.91s    1.91s     0.523    7.63MB     3.14</span>
-<span class="co">#&gt; [38;5;250m3[39m fp(1e+06)     2.54s    2.54s     0.393    7.63MB     1.97</span>
-<span class="op">(</span><span class="va">ben_tam2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_tam2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span>
-<span class="co">#&gt; [1] 364ns</span>
-<span class="op">(</span><span class="va">ben_tam2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_tam2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span>
-<span class="co">#&gt; [1] 631ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_tam2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">f01</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_tam2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0(1e+06)  760.63ms 760.63ms     1.31     7.63MB     5.26</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> f01(1e+06)       1s       1s     0.998    7.63MB     5.99</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fp(1e+06)     1.29s    1.29s     0.776    7.63MB     3.88</span></span>
+<span><span class="op">(</span><span class="va">ben_tam2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_tam2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span></span>
+<span><span class="co">#&gt; [1] 528ns</span></span>
+<span><span class="op">(</span><span class="va">ben_tam2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_tam2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span></span>
+<span><span class="co">#&gt; [1] 287ns</span></span></code></pre></div>
 </div>
-<div id="mapping-with-purrr" class="section level3">
-<h3 class="hasAnchor">
-<a href="#mapping-with-purrr" class="anchor"></a>Mapping with purrr</h3>
+<div class="section level4">
+<h4 id="mapping-with-purrr">Mapping with purrr<a class="anchor" aria-label="anchor" href="#mapping-with-purrr"></a>
+</h4>
 <p>This is the baseline:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>
-  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">seq</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
+<span>  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">seq</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>With index vector:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f01</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>
-  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">f01</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
+<span>  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>With progress bars:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span>
-  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="fu"><a href="../reference/cli_progress_along.html">cli_progress_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">seq</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span></span>
+<span>  <span class="va">ret</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu"><a href="../reference/cli_progress_along.html">cli_progress_along</a></span><span class="op">(</span><span class="va">seq</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">ret</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Overhead per iteration:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_pur</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">f01</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">ben_pur</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 3 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0()          102ms    133ms      7.84    1.04MB     2.61</span>
-<span class="co">#&gt; [38;5;250m2[39m f01()         123ms    130ms      7.68   781.3KB     7.68</span>
-<span class="co">#&gt; [38;5;250m3[39m fp()          126ms    128ms      7.78  782.45KB     7.78</span>
-<span class="op">(</span><span class="va">ben_pur</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_pur</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span>
-<span class="co">#&gt; [1] 1ns</span>
-<span class="op">(</span><span class="va">ben_pur</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_pur</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span>
-<span class="co">#&gt; [1] 1ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_pur</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">f01</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ben_pur</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0()         65.8ms     66ms     15.1     1.11MB     9.08</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> f01()        81.1ms     82ms     12.2    781.3KB    12.2 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fp()         98.5ms    103ms      9.85  783.15KB     6.57</span></span>
+<span><span class="op">(</span><span class="va">ben_pur</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_pur</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span></span>
+<span><span class="co">#&gt; [1] 367ns</span></span>
+<span><span class="op">(</span><span class="va">ben_pur</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_pur</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span></span>
+<span><span class="co">#&gt; [1] 207ns</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_pur2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">f01</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_pur2</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 3 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0(1e+06)     1.46s    1.46s     0.683    7.63MB     1.37</span>
-<span class="co">#&gt; [38;5;250m2[39m f01(1e+06)    1.95s    1.95s     0.512    7.63MB     2.05</span>
-<span class="co">#&gt; [38;5;250m3[39m fp(1e+06)      1.9s     1.9s     0.528    7.63MB     2.11</span>
-<span class="op">(</span><span class="va">ben_pur2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_pur2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span>
-<span class="co">#&gt; [1] 431ns</span>
-<span class="op">(</span><span class="va">ben_pur2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_pur2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span>
-<span class="co">#&gt; [1] 1ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_pur2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">f01</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_pur2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0(1e+06)  805.86ms 805.86ms     1.24     7.63MB     3.72</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> f01(1e+06)    1.05s    1.05s     0.948    7.63MB     4.74</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fp(1e+06)     1.31s    1.31s     0.766    7.63MB     2.30</span></span>
+<span><span class="op">(</span><span class="va">ben_pur2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_pur2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span></span>
+<span><span class="co">#&gt; [1] 500ns</span></span>
+<span><span class="op">(</span><span class="va">ben_pur2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_pur2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span></span>
+<span><span class="co">#&gt; [1] 251ns</span></span></code></pre></div>
 </div>
 </div>
-<div id="ticking" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ticking" class="anchor"></a><code>ticking()</code>
-</h2>
+<div class="section level3">
+<h3 id="ticking">
+<code>ticking()</code><a class="anchor" aria-label="anchor" href="#ticking"></a>
+</h3>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span> 
-  <span class="kw">while</span> <span class="op">(</span><span class="va">i</span> <span class="op">&lt;</span> <span class="va">n</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op">%%</span> <span class="fl">2</span>
-    <span class="va">i</span> <span class="op">&lt;-</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span>
-  <span class="op">}</span>
-  <span class="va">x</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span> </span>
+<span>  <span class="kw">while</span> <span class="op">(</span><span class="va">i</span> <span class="op">&lt;</span> <span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>    <span class="va">i</span> <span class="op">&lt;-</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span> 
-  <span class="kw">while</span> <span class="op">(</span><span class="fu"><a href="../reference/cli_progress_bar.html">ticking</a></span><span class="op">(</span><span class="va">i</span> <span class="op">&lt;</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op">%%</span> <span class="fl">2</span>
-    <span class="va">i</span> <span class="op">&lt;-</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span>
-  <span class="op">}</span>
-  <span class="va">x</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span> </span>
+<span>  <span class="kw">while</span> <span class="op">(</span><span class="fu"><a href="../reference/cli_progress_bar.html">ticking</a></span><span class="op">(</span><span class="va">i</span> <span class="op">&lt;</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>    <span class="va">i</span> <span class="op">&lt;-</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_tk</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_tk</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 2 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0()         18.1ms  22.23ms    38.4      41.3KB     3.84</span>
-<span class="co">#&gt; [38;5;250m2[39m fp()          9.62s    9.62s     0.104    96.2KB     1.14</span>
-<span class="op">(</span><span class="va">ben_tk</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_tk</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span>
-<span class="co">#&gt; [1] 96µs</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_tk</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_tk</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0()         12.7ms   12.9ms    76.2      40.2KB     5.86</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fp()             4s       4s     0.250   100.6KB     3.00</span></span>
+<span><span class="op">(</span><span class="va">ben_tk</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_tk</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span></span>
+<span><span class="co">#&gt; [1] 39.9µs</span></span></code></pre></div>
 </div>
-<div id="traditional-api" class="section level2">
-<h2 class="hasAnchor">
-<a href="#traditional-api" class="anchor"></a>Traditional API</h2>
+<div class="section level3">
+<h3 id="traditional-api">Traditional API<a class="anchor" aria-label="anchor" href="#traditional-api"></a>
+</h3>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op">%%</span> <span class="fl">2</span>
-  <span class="op">}</span>
-  <span class="va">x</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">f0</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_bar</a></span><span class="op">(</span>total <span class="op">=</span> <span class="va">n</span><span class="op">)</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op">%%</span> <span class="fl">2</span>
-    <span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_update</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="va">x</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_bar</a></span><span class="op">(</span>total <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>    <span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_update</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ff</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_bar</a></span><span class="op">(</span>total <span class="op">=</span> <span class="va">n</span><span class="op">)</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op">%%</span> <span class="fl">2</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="va">`__cli_update_due`</span><span class="op">)</span> <span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_update</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="va">x</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ff</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_bar</a></span><span class="op">(</span>total <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">+</span> <span class="va">i</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">`__cli_update_due`</span><span class="op">)</span> <span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_update</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_api</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">ff</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_api</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 3 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0()        26.49ms  34.05ms    19.9      19.9KB     3.06</span>
-<span class="co">#&gt; [38;5;250m2[39m ff()        32.31ms  41.24ms    24.5      27.9KB     1.88</span>
-<span class="co">#&gt; [38;5;250m3[39m fp()          6.56s    6.56s     0.152    25.3KB     1.07</span>
-<span class="op">(</span><span class="va">ben_api</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_api</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span>
-<span class="co">#&gt; [1] 65.3µs</span>
-<span class="op">(</span><span class="va">ben_api</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_api</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span>
-<span class="co">#&gt; [1] 71.9ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_api</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="op">)</span>, <span class="fu">ff</span><span class="op">(</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_api</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0()        11.75ms  11.95ms    68.1      19.9KB     9.73</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> ff()        21.77ms  21.94ms    42.4      28.4KB     3.85</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fp()          2.33s    2.33s     0.430    25.9KB     3.01</span></span>
+<span><span class="op">(</span><span class="va">ben_api</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_api</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span></span>
+<span><span class="co">#&gt; [1] 23.2µs</span></span>
+<span><span class="op">(</span><span class="va">ben_api</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_api</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e5</span></span>
+<span><span class="co">#&gt; [1] 99.9ns</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ben_api2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">ff</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span>
-<span class="va">ben_api2</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 3 x 6[39m</span>
-<span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m f0(1e+06)   236.9ms  258.6ms    3.87          0B    3.87 </span>
-<span class="co">#&gt; [38;5;250m2[39m ff(1e+06)   262.3ms  266.9ms    3.75      1.15KB    3.75 </span>
-<span class="co">#&gt; [38;5;250m3[39m fp(1e+06)     55.7s    55.7s    0.017[4m9[24m    1.15KB    0.933</span>
-<span class="op">(</span><span class="va">ben_api2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_api2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span>
-<span class="co">#&gt; [1] 55.5µs</span>
-<span class="op">(</span><span class="va">ben_api2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_api2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span>
-<span class="co">#&gt; [1] 8.37ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ben_api2</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu">f0</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">ff</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span>, <span class="fu">fp</span><span class="op">(</span><span class="fl">1e6</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some expressions had a GC in every iteration; so filtering is</span></span>
+<span><span class="co">#&gt; disabled.</span></span>
+<span><span class="va">ben_api2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> f0(1e+06)   123.5ms  124.5ms    7.92          0B     9.90</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> ff(1e+06)   220.6ms  223.2ms    4.23       1.8KB     5.64</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fp(1e+06)     21.5s    21.5s    0.046<span style="text-decoration: underline;">5</span>     1.8KB     3.12</span></span>
+<span><span class="op">(</span><span class="va">ben_api2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_api2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span></span>
+<span><span class="co">#&gt; [1] 21.4µs</span></span>
+<span><span class="op">(</span><span class="va">ben_api2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_api2</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span></span>
+<span><span class="co">#&gt; [1] 98.7ns</span></span></code></pre></div>
 </div>
 </div>
-<div id="c-benchmarks" class="section level1">
-<h1 class="hasAnchor">
-<a href="#c-benchmarks" class="anchor"></a>C benchmarks</h1>
+<div class="section level2">
+<h2 id="c-benchmarks">C benchmarks<a class="anchor" aria-label="anchor" href="#c-benchmarks"></a>
+</h2>
 <p>Baseline function:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1"></a>SEXP test_baseline() {</span>
-<span id="cb29-2"><a href="#cb29-2"></a>  <span class="dt">int</span> i;</span>
-<span id="cb29-3"><a href="#cb29-3"></a>  <span class="dt">int</span> res = <span class="dv">0</span>;</span>
-<span id="cb29-4"><a href="#cb29-4"></a>  <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">2000000000</span>; i++) {</span>
-<span id="cb29-5"><a href="#cb29-5"></a>    res += i % <span class="dv">2</span>;</span>
-<span id="cb29-6"><a href="#cb29-6"></a>  }</span>
-<span id="cb29-7"><a href="#cb29-7"></a>  <span class="cf">return</span> ScalarInteger(res);</span>
-<span id="cb29-8"><a href="#cb29-8"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>SEXP test_baseline<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  <span class="dt">int</span> res <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">2000000000</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>    res <span class="op">+=</span> i <span class="op">%</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a>  <span class="cf">return</span> ScalarInteger<span class="op">(</span>res<span class="op">);</span></span>
+<span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Switch + modulo check:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="#cb30-1"></a>SEXP test_modulo(SEXP progress) {</span>
-<span id="cb30-2"><a href="#cb30-2"></a>  <span class="dt">int</span> i;</span>
-<span id="cb30-3"><a href="#cb30-3"></a>  <span class="dt">int</span> res = <span class="dv">0</span>;</span>
-<span id="cb30-4"><a href="#cb30-4"></a>  <span class="dt">int</span> progress_ = LOGICAL(progress)[<span class="dv">0</span>];</span>
-<span id="cb30-5"><a href="#cb30-5"></a>  <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">2000000000</span>; i++) {</span>
-<span id="cb30-6"><a href="#cb30-6"></a>    <span class="cf">if</span> (i % <span class="dv">10000</span> == <span class="dv">0</span> &amp;&amp; progress_) cli_progress_set(R_NilValue, i);</span>
-<span id="cb30-7"><a href="#cb30-7"></a>    res += i % <span class="dv">2</span>;</span>
-<span id="cb30-8"><a href="#cb30-8"></a>  }</span>
-<span id="cb30-9"><a href="#cb30-9"></a>  <span class="cf">return</span> ScalarInteger(res);</span>
-<span id="cb30-10"><a href="#cb30-10"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>SEXP test_modulo<span class="op">(</span>SEXP progress<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  <span class="dt">int</span> res <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>  <span class="dt">int</span> progress_ <span class="op">=</span> LOGICAL<span class="op">(</span>progress<span class="op">)[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">2000000000</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>i <span class="op">%</span> <span class="dv">10000</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> progress_<span class="op">)</span> cli_progress_set<span class="op">(</span>R_NilValue<span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a>    res <span class="op">+=</span> i <span class="op">%</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb30-9"><a href="#cb30-9" tabindex="-1"></a>  <span class="cf">return</span> ScalarInteger<span class="op">(</span>res<span class="op">);</span></span>
+<span id="cb30-10"><a href="#cb30-10" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>cli progress bar API:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb31-1"><a href="#cb31-1"></a>SEXP test_cli() {</span>
-<span id="cb31-2"><a href="#cb31-2"></a>  <span class="dt">int</span> i;</span>
-<span id="cb31-3"><a href="#cb31-3"></a>  <span class="dt">int</span> res = <span class="dv">0</span>;</span>
-<span id="cb31-4"><a href="#cb31-4"></a>  SEXP bar = PROTECT(cli_progress_bar(<span class="dv">2000000000</span>, NULL));</span>
-<span id="cb31-5"><a href="#cb31-5"></a>  <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">2000000000</span>; i++) {</span>
-<span id="cb31-6"><a href="#cb31-6"></a>    <span class="cf">if</span> (CLI_SHOULD_TICK) cli_progress_set(bar, i);</span>
-<span id="cb31-7"><a href="#cb31-7"></a>    res += i % <span class="dv">2</span>;</span>
-<span id="cb31-8"><a href="#cb31-8"></a>  }</span>
-<span id="cb31-9"><a href="#cb31-9"></a>  cli_progress_done(bar);</span>
-<span id="cb31-10"><a href="#cb31-10"></a>  UNPROTECT(<span class="dv">1</span>);</span>
-<span id="cb31-11"><a href="#cb31-11"></a>  <span class="cf">return</span> ScalarInteger(res);</span>
-<span id="cb31-12"><a href="#cb31-12"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb32-1"><a href="#cb32-1"></a>SEXP test_cli_unroll() {</span>
-<span id="cb32-2"><a href="#cb32-2"></a>  <span class="dt">int</span> i = <span class="dv">0</span>;</span>
-<span id="cb32-3"><a href="#cb32-3"></a>  <span class="dt">int</span> res = <span class="dv">0</span>;</span>
-<span id="cb32-4"><a href="#cb32-4"></a>  SEXP bar = PROTECT(cli_progress_bar(<span class="dv">2000000000</span>, NULL));</span>
-<span id="cb32-5"><a href="#cb32-5"></a>  <span class="dt">int</span> s, final, step = <span class="dv">2000000000</span> / <span class="dv">100000</span>;</span>
-<span id="cb32-6"><a href="#cb32-6"></a>  <span class="cf">for</span> (s = <span class="dv">0</span>; s &lt; <span class="dv">100000</span>; s++) {</span>
-<span id="cb32-7"><a href="#cb32-7"></a>    <span class="cf">if</span> (CLI_SHOULD_TICK) cli_progress_set(bar, i);</span>
-<span id="cb32-8"><a href="#cb32-8"></a>    final = (s + <span class="dv">1</span>) * step;</span>
-<span id="cb32-9"><a href="#cb32-9"></a>    <span class="cf">for</span> (i = s * step; i &lt; final; i++) {</span>
-<span id="cb32-10"><a href="#cb32-10"></a>      res += i % <span class="dv">2</span>;</span>
-<span id="cb32-11"><a href="#cb32-11"></a>    }</span>
-<span id="cb32-12"><a href="#cb32-12"></a>  }</span>
-<span id="cb32-13"><a href="#cb32-13"></a>  cli_progress_done(bar);</span>
-<span id="cb32-14"><a href="#cb32-14"></a>  UNPROTECT(<span class="dv">1</span>);</span>
-<span id="cb32-15"><a href="#cb32-15"></a>  <span class="cf">return</span> ScalarInteger(res);</span>
-<span id="cb32-16"><a href="#cb32-16"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>SEXP test_cli<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>  <span class="dt">int</span> res <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a>  SEXP bar <span class="op">=</span> PROTECT<span class="op">(</span>cli_progress_bar<span class="op">(</span><span class="dv">2000000000</span><span class="op">,</span> NULL<span class="op">));</span></span>
+<span id="cb31-5"><a href="#cb31-5" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">2000000000</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb31-6"><a href="#cb31-6" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>CLI_SHOULD_TICK<span class="op">)</span> cli_progress_set<span class="op">(</span>bar<span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb31-7"><a href="#cb31-7" tabindex="-1"></a>    res <span class="op">+=</span> i <span class="op">%</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb31-8"><a href="#cb31-8" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb31-9"><a href="#cb31-9" tabindex="-1"></a>  cli_progress_done<span class="op">(</span>bar<span class="op">);</span></span>
+<span id="cb31-10"><a href="#cb31-10" tabindex="-1"></a>  UNPROTECT<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb31-11"><a href="#cb31-11" tabindex="-1"></a>  <span class="cf">return</span> ScalarInteger<span class="op">(</span>res<span class="op">);</span></span>
+<span id="cb31-12"><a href="#cb31-12" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>SEXP test_cli_unroll<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  <span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  <span class="dt">int</span> res <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>  SEXP bar <span class="op">=</span> PROTECT<span class="op">(</span>cli_progress_bar<span class="op">(</span><span class="dv">2000000000</span><span class="op">,</span> NULL<span class="op">));</span></span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>  <span class="dt">int</span> s<span class="op">,</span> final<span class="op">,</span> step <span class="op">=</span> <span class="dv">2000000000</span> <span class="op">/</span> <span class="dv">100000</span><span class="op">;</span></span>
+<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span>s <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> s <span class="op">&lt;</span> <span class="dv">100000</span><span class="op">;</span> s<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>CLI_SHOULD_TICK<span class="op">)</span> cli_progress_set<span class="op">(</span>bar<span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a>    final <span class="op">=</span> <span class="op">(</span>s <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> step<span class="op">;</span></span>
+<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> s <span class="op">*</span> step<span class="op">;</span> i <span class="op">&lt;</span> final<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb32-10"><a href="#cb32-10" tabindex="-1"></a>      res <span class="op">+=</span> i <span class="op">%</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb32-11"><a href="#cb32-11" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb32-12"><a href="#cb32-12" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb32-13"><a href="#cb32-13" tabindex="-1"></a>  cli_progress_done<span class="op">(</span>bar<span class="op">);</span></span>
+<span id="cb32-14"><a href="#cb32-14" tabindex="-1"></a>  UNPROTECT<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb32-15"><a href="#cb32-15" tabindex="-1"></a>  <span class="cf">return</span> ScalarInteger<span class="op">(</span>res<span class="op">);</span></span>
+<span id="cb32-16"><a href="#cb32-16" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">progresstest</span><span class="op">)</span>
-<span class="va">ben_c</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span>
-  <span class="fu">test_baseline</span><span class="op">(</span><span class="op">)</span>,
-  <span class="fu">test_modulo</span><span class="op">(</span><span class="op">)</span>,
-  <span class="fu">test_cli</span><span class="op">(</span><span class="op">)</span>,
-  <span class="fu">test_cli_unroll</span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">ben_c</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 4 x 6[39m</span>
-<span class="co">#&gt;   expression             min   median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m        [3m[38;5;246m&lt;bch:tm&gt;[39m[23m [3m[38;5;246m&lt;bch:tm&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m test_baseline()   108.58ms 114.52ms     8.65     2.08KB        0</span>
-<span class="co">#&gt; [38;5;250m2[39m test_modulo()        1.34s    1.34s     0.747    2.24KB        0</span>
-<span class="co">#&gt; [38;5;250m3[39m test_cli()           1.41s    1.41s     0.711    22.2KB        0</span>
-<span class="co">#&gt; [38;5;250m4[39m test_cli_unroll()    110ms 110.68ms     8.88     3.38KB        0</span>
-<span class="op">(</span><span class="va">ben_c</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_c</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2000000000</span>
-<span class="co">#&gt; [1] 1ns</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">progresstest</span><span class="op">)</span></span>
+<span><span class="va">ben_c</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span></span>
+<span>  <span class="fu">test_baseline</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu">test_modulo</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu">test_cli</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu">test_cli_unroll</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ben_c</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 6</span></span></span>
+<span><span class="co">#&gt;   expression             min   median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:tm&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> test_baseline()   619.62ms 619.62ms     1.61     2.08KB        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> test_modulo()        1.24s    1.24s     0.807    2.23KB        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> test_cli()           1.24s    1.24s     0.806   23.91KB        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> test_cli_unroll() 620.99ms 620.99ms     1.61     3.58KB        0</span></span>
+<span><span class="op">(</span><span class="va">ben_c</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="va">ben_c</span><span class="op">$</span><span class="va">median</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2000000000</span></span>
+<span><span class="co">#&gt; [1] 1ns</span></span></code></pre></div>
 </div>
-<div id="display-update" class="section level1">
-<h1 class="hasAnchor">
-<a href="#display-update" class="anchor"></a>Display update</h1>
-<p>We only update the display a fixed number of times per second. (Currently maximum five times per second.)</p>
+<div class="section level2">
+<h2 id="display-update">Display update<a class="anchor" aria-label="anchor" href="#display-update"></a>
+</h2>
+<p>We only update the display a fixed number of times per second.
+(Currently maximum five times per second.)</p>
 <p>Let’s measure how long a single update takes.</p>
-<div id="iterator-with-a-bar" class="section level2">
-<h2 class="hasAnchor">
-<a href="#iterator-with-a-bar" class="anchor"></a>Iterator with a bar</h2>
+<div class="section level3">
+<h3 id="iterator-with-a-bar">Iterator with a bar<a class="anchor" aria-label="anchor" href="#iterator-with-a-bar"></a>
+</h3>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_bar</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fl">100000</span><span class="op">)</span>
-<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_update</a></span><span class="op">(</span>force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, max_iterations <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 10m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  5h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  4h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  3h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  2h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  2h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  2h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  2h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA:  1h</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 49m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 48m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 47m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 46m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 45m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 43m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 42m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 41m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 41m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 40m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 39m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 38m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 38m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 37m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 36m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 36m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 35m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 35m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 34m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 34m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 34m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 33m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 33m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 32m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 33m</span>
-<span class="co">#&gt; [32m[32m■                               [32m[39m   0% | ETA: 32m</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 1 x 6[39m</span>
-<span class="co">#&gt;   expression                            min  median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m                        [3m[38;5;246m&lt;bch:t&gt;[39m[23m [3m[38;5;246m&lt;bch:t&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m cli_progress_update(force = TRUE)  9.37ms  10.3ms      88.8    1.73MB     2.11</span>
-<span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_done</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_bar</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fl">100000</span><span class="op">)</span></span>
+<span><span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_update</a></span><span class="op">(</span>force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, max_iterations <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA:  5m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA:  2h</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA:  1h</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA:  1h</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA:  1h</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 44m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 39m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 35m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 32m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 30m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 28m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 27m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 25m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 24m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 23m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 22m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 22m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 21m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 20m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 20m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 19m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 19m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 18m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 18m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 18m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 17m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 17m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 17m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 17m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 16m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 16m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 16m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 16m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 16m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 16m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 16m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 15m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 15m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 15m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 15m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 15m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 15m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 15m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 15m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 14m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 13m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">■                               </span>   0% | ETA: 12m</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
+<span><span class="co">#&gt;   expression                       min median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;bch:&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> cli_progress_update(force = … 5.63ms 5.75ms      170.    1.34MB     2.05</span></span>
+<span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_done</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="iterator-without-a-bar" class="section level2">
-<h2 class="hasAnchor">
-<a href="#iterator-without-a-bar" class="anchor"></a>Iterator without a bar</h2>
+<div class="section level3">
+<h3 id="iterator-without-a-bar">Iterator without a bar<a class="anchor" aria-label="anchor" href="#iterator-without-a-bar"></a>
+</h3>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_bar</a></span><span class="op">(</span>total <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_update</a></span><span class="op">(</span>force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, max_iterations <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>
-<span class="co">#&gt; ⠙ 1 done (315/s) | 4ms</span>
-<span class="co">#&gt; ⠹ 2 done (36/s) | 56ms</span>
-<span class="co">#&gt; ⠸ 3 done (43/s) | 70ms</span>
-<span class="co">#&gt; ⠼ 4 done (48/s) | 84ms</span>
-<span class="co">#&gt; ⠴ 5 done (50/s) | 100ms</span>
-<span class="co">#&gt; ⠦ 6 done (53/s) | 114ms</span>
-<span class="co">#&gt; ⠧ 7 done (27/s) | 256ms</span>
-<span class="co">#&gt; ⠇ 8 done (29/s) | 275ms</span>
-<span class="co">#&gt; ⠏ 9 done (30/s) | 298ms</span>
-<span class="co">#&gt; ⠋ 10 done (32/s) | 311ms</span>
-<span class="co">#&gt; ⠙ 11 done (34/s) | 323ms</span>
-<span class="co">#&gt; ⠹ 12 done (36/s) | 335ms</span>
-<span class="co">#&gt; ⠸ 13 done (36/s) | 360ms</span>
-<span class="co">#&gt; ⠼ 14 done (37/s) | 380ms</span>
-<span class="co">#&gt; ⠴ 15 done (38/s) | 391ms</span>
-<span class="co">#&gt; ⠦ 16 done (39/s) | 415ms</span>
-<span class="co">#&gt; ⠧ 17 done (40/s) | 429ms</span>
-<span class="co">#&gt; ⠇ 18 done (39/s) | 459ms</span>
-<span class="co">#&gt; ⠏ 19 done (39/s) | 482ms</span>
-<span class="co">#&gt; ⠋ 20 done (40/s) | 506ms</span>
-<span class="co">#&gt; ⠙ 21 done (41/s) | 517ms</span>
-<span class="co">#&gt; ⠹ 22 done (42/s) | 528ms</span>
-<span class="co">#&gt; ⠸ 23 done (42/s) | 543ms</span>
-<span class="co">#&gt; [38;5;246m# A tibble: 1 x 6[39m</span>
-<span class="co">#&gt;   expression                            min  median `itr/sec` mem_alloc `gc/sec`</span>
-<span class="co">#&gt;   [3m[38;5;246m&lt;bch:expr&gt;[39m[23m                        [3m[38;5;246m&lt;bch:t&gt;[39m[23m [3m[38;5;246m&lt;bch:t&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;bch:byt&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m</span>
-<span class="co">#&gt; [38;5;250m1[39m cli_progress_update(force = TRUE)  10.9ms  15.8ms      43.0     191KB        0</span>
-<span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_done</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_bar</a></span><span class="op">(</span>total <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_update</a></span><span class="op">(</span>force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, max_iterations <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ⠙ 1 done (412/s) | 3ms</span></span>
+<span><span class="co">#&gt; ⠹ 2 done (70/s) | 29ms</span></span>
+<span><span class="co">#&gt; ⠸ 3 done (84/s) | 36ms</span></span>
+<span><span class="co">#&gt; ⠼ 4 done (95/s) | 43ms</span></span>
+<span><span class="co">#&gt; ⠴ 5 done (102/s) | 50ms</span></span>
+<span><span class="co">#&gt; ⠦ 6 done (107/s) | 57ms</span></span>
+<span><span class="co">#&gt; ⠧ 7 done (112/s) | 63ms</span></span>
+<span><span class="co">#&gt; ⠇ 8 done (115/s) | 70ms</span></span>
+<span><span class="co">#&gt; ⠏ 9 done (113/s) | 80ms</span></span>
+<span><span class="co">#&gt; ⠋ 10 done (115/s) | 88ms</span></span>
+<span><span class="co">#&gt; ⠙ 11 done (116/s) | 95ms</span></span>
+<span><span class="co">#&gt; ⠹ 12 done (118/s) | 102ms</span></span>
+<span><span class="co">#&gt; ⠸ 13 done (119/s) | 110ms</span></span>
+<span><span class="co">#&gt; ⠼ 14 done (120/s) | 117ms</span></span>
+<span><span class="co">#&gt; ⠴ 15 done (121/s) | 124ms</span></span>
+<span><span class="co">#&gt; ⠦ 16 done (123/s) | 131ms</span></span>
+<span><span class="co">#&gt; ⠧ 17 done (124/s) | 138ms</span></span>
+<span><span class="co">#&gt; ⠇ 18 done (125/s) | 144ms</span></span>
+<span><span class="co">#&gt; ⠏ 19 done (126/s) | 151ms</span></span>
+<span><span class="co">#&gt; ⠋ 20 done (127/s) | 158ms</span></span>
+<span><span class="co">#&gt; ⠙ 21 done (128/s) | 165ms</span></span>
+<span><span class="co">#&gt; ⠹ 22 done (129/s) | 171ms</span></span>
+<span><span class="co">#&gt; ⠸ 23 done (130/s) | 178ms</span></span>
+<span><span class="co">#&gt; ⠼ 24 done (130/s) | 185ms</span></span>
+<span><span class="co">#&gt; ⠴ 25 done (131/s) | 191ms</span></span>
+<span><span class="co">#&gt; ⠦ 26 done (132/s) | 198ms</span></span>
+<span><span class="co">#&gt; ⠧ 27 done (132/s) | 205ms</span></span>
+<span><span class="co">#&gt; ⠇ 28 done (133/s) | 212ms</span></span>
+<span><span class="co">#&gt; ⠏ 29 done (133/s) | 218ms</span></span>
+<span><span class="co">#&gt; ⠋ 30 done (134/s) | 225ms</span></span>
+<span><span class="co">#&gt; ⠙ 31 done (134/s) | 232ms</span></span>
+<span><span class="co">#&gt; ⠹ 32 done (134/s) | 239ms</span></span>
+<span><span class="co">#&gt; ⠸ 33 done (135/s) | 245ms</span></span>
+<span><span class="co">#&gt; ⠼ 34 done (135/s) | 252ms</span></span>
+<span><span class="co">#&gt; ⠴ 35 done (135/s) | 259ms</span></span>
+<span><span class="co">#&gt; ⠦ 36 done (136/s) | 266ms</span></span>
+<span><span class="co">#&gt; ⠧ 37 done (136/s) | 273ms</span></span>
+<span><span class="co">#&gt; ⠇ 38 done (136/s) | 280ms</span></span>
+<span><span class="co">#&gt; ⠏ 39 done (137/s) | 286ms</span></span>
+<span><span class="co">#&gt; ⠋ 40 done (137/s) | 293ms</span></span>
+<span><span class="co">#&gt; ⠙ 41 done (137/s) | 300ms</span></span>
+<span><span class="co">#&gt; ⠹ 42 done (137/s) | 307ms</span></span>
+<span><span class="co">#&gt; ⠸ 43 done (137/s) | 313ms</span></span>
+<span><span class="co">#&gt; ⠼ 44 done (138/s) | 320ms</span></span>
+<span><span class="co">#&gt; ⠴ 45 done (138/s) | 327ms</span></span>
+<span><span class="co">#&gt; ⠦ 46 done (138/s) | 334ms</span></span>
+<span><span class="co">#&gt; ⠧ 47 done (138/s) | 341ms</span></span>
+<span><span class="co">#&gt; ⠇ 48 done (138/s) | 347ms</span></span>
+<span><span class="co">#&gt; ⠏ 49 done (139/s) | 354ms</span></span>
+<span><span class="co">#&gt; ⠋ 50 done (139/s) | 361ms</span></span>
+<span><span class="co">#&gt; ⠙ 51 done (139/s) | 367ms</span></span>
+<span><span class="co">#&gt; ⠹ 52 done (139/s) | 374ms</span></span>
+<span><span class="co">#&gt; ⠸ 53 done (139/s) | 381ms</span></span>
+<span><span class="co">#&gt; ⠼ 54 done (139/s) | 388ms</span></span>
+<span><span class="co">#&gt; ⠴ 55 done (140/s) | 395ms</span></span>
+<span><span class="co">#&gt; ⠦ 56 done (140/s) | 402ms</span></span>
+<span><span class="co">#&gt; ⠧ 57 done (140/s) | 408ms</span></span>
+<span><span class="co">#&gt; ⠇ 58 done (140/s) | 415ms</span></span>
+<span><span class="co">#&gt; ⠏ 59 done (140/s) | 422ms</span></span>
+<span><span class="co">#&gt; ⠋ 60 done (140/s) | 429ms</span></span>
+<span><span class="co">#&gt; ⠙ 61 done (140/s) | 436ms</span></span>
+<span><span class="co">#&gt; ⠹ 62 done (140/s) | 442ms</span></span>
+<span><span class="co">#&gt; ⠸ 63 done (141/s) | 449ms</span></span>
+<span><span class="co">#&gt; ⠼ 64 done (141/s) | 456ms</span></span>
+<span><span class="co">#&gt; ⠴ 65 done (139/s) | 467ms</span></span>
+<span><span class="co">#&gt; ⠦ 66 done (139/s) | 474ms</span></span>
+<span><span class="co">#&gt; ⠧ 67 done (139/s) | 482ms</span></span>
+<span><span class="co">#&gt; ⠇ 68 done (139/s) | 489ms</span></span>
+<span><span class="co">#&gt; ⠏ 69 done (139/s) | 497ms</span></span>
+<span><span class="co">#&gt; ⠋ 70 done (139/s) | 504ms</span></span>
+<span><span class="co">#&gt; ⠙ 71 done (139/s) | 511ms</span></span>
+<span><span class="co">#&gt; ⠹ 72 done (139/s) | 518ms</span></span>
+<span><span class="co">#&gt; ⠸ 73 done (139/s) | 524ms</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
+<span><span class="co">#&gt;   expression                       min median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;bch:expr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;bch:&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;bch:byt&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> cli_progress_update(force = … 6.62ms 6.75ms      146.     198KB     4.17</span></span>
+<span><span class="fu"><a href="../reference/cli_progress_bar.html">cli_progress_done</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Gábor Csárdi.</p>
+   </div>
+  <footer><div class="container">
+  <div class="pkgdown-footer-left">
+  <p>Developed by <a href="https://github.com/gaborcsardi" class="external-link">Gábor Csárdi</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" width="62" style="margin-bottom: 3px;"></a>.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
-      </footer>
-</div>
-
-  
-
-
-  </body>
+  </div></footer>
+</body>
 </html>
