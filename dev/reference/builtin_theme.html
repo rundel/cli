@@ -9,7 +9,7 @@ stack. See themes."><meta name="robots" content="noindex"><script defer data-dom
 
     <a class="navbar-brand me-2" href="../index.html">cli</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.6.5.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.6.3.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@ stack. See themes."><meta name="robots" content="noindex"><script defer data-dom
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>The built-in CLI theme</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/cli/blob/master/R/themes.R" class="external-link"><code>R/themes.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/cli/blob/main/R/themes.R" class="external-link"><code>R/themes.R</code></a></small>
       <div class="d-none name"><code>builtin_theme.Rd</code></div>
     </div>
 
@@ -106,8 +106,8 @@ works in recent RStudio versions and in iTerm on macOS.</p></dd>
 <span><span class="fu"><a href="../reference/cli_par.html">cli_par</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"code R"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/cli_verbatim.html">cli_verbatim</a></span><span class="op">(</span></span>
 <span>  <span class="st">'# window functions are useful for grouped mutates'</span>,</span>
-<span>  <span class="st">'mtcars |&gt;'</span>,</span>
-<span>  <span class="st">'  group_by(cyl) |&gt;'</span>,</span>
+<span>  <span class="st">'mtcars %&gt;%'</span>,</span>
+<span>  <span class="st">'  group_by(cyl) %&gt;%'</span>,</span>
 <span>  <span class="st">'  mutate(rank = min_rank(desc(mpg)))'</span><span class="op">)</span></span></code></pre><p></p></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><div class="sourceCode"><pre>
 #&gt; <span style="color: #2AA198;">──</span> <span style="font-weight: bold;">Heading 1</span> <span style="color: #2AA198;">─────────────────────────────────────────────────────────</span>
@@ -125,16 +125,16 @@ works in recent RStudio versions and in iTerm on macOS.</p></dd>
 #&gt; Time intervals: <span style="color: #b8b8b8;">[3.4s]</span>
 #&gt; <span style="font-style: italic;">Emphasis</span> and <span style="font-weight: bold;">strong emphasis</span>
 #&gt; This is a piece of code: `sum(x) / length(x)`
-#&gt; Function names: `<a href="x-r-help:cli::simple_theme">cli::simple_theme</a>()`
-#&gt; Files: <span style="color: #268BD2;"><a href="file:///usr/bin/env">/usr/bin/env</a></span>
-#&gt; URLs: <span style="font-style: italic;color: #268BD2;">&lt;</span><span style="font-style: italic;color: #268BD2;"><a href="https://r-project.org" class="external-link">https://r-project.org</a></span><span style="font-style: italic;color: #268BD2;">&gt;</span>
+#&gt; Function names: `cli::simple_theme()`
+#&gt; Files: <span style="color: #268BD2;">/usr/bin/env</span>
+#&gt; URLs: <span style="font-style: italic;color: #268BD2;">&lt;https://r-project.org&gt;</span>
 #&gt;
 #&gt; ── <span style="font-weight: bold;">Longer code chunk</span> ──
 #&gt;
-#&gt; <span style="color: #666699;"># window functions are useful for grouped mutates</span>
-#&gt; mtcars <span style="color: #cc9900;">|&gt;</span>
-#&gt;   <span style="font-weight: bold;">group_by</span><span style="color: #cc9900;">(</span>cyl<span style="color: #cc9900;">)</span> <span style="color: #cc9900;">|&gt;</span>
-#&gt;   <span style="font-weight: bold;">mutate</span><span style="color: #cc9900;">(</span>rank = <span style="font-weight: bold;">min_rank</span><span style="color: #B58900;">(</span><span style="font-weight: bold;">desc</span><span style="color: #268BD2;">(</span>mpg<span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>
+#&gt; <span style="font-style: italic;color: #a3a3a3;"># window functions are useful for grouped mutates</span>
+#&gt; mtcars <span style="color: #859900;">%&gt;%</span>
+#&gt;   <span style="color: #2AA198;">group_by</span><span style="color: #B58900;">(</span>cyl<span style="color: #B58900;">)</span> <span style="color: #859900;">%&gt;%</span>
+#&gt;   <span style="color: #2AA198;">mutate</span><span style="color: #B58900;">(</span>rank = <span style="color: #2AA198;">min_rank</span><span style="color: #268BD2;">(</span><span style="color: #2AA198;">desc(</span>mpg<span style="color: #2AA198;">)</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>
 </pre></div></div>
     </div>
     <div class="section level2">

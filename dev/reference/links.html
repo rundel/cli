@@ -9,7 +9,7 @@ supports them."><meta name="robots" content="noindex"><script defer data-domain=
 
     <a class="navbar-brand me-2" href="../index.html">cli</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.6.5.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.6.3.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@ supports them."><meta name="robots" content="noindex"><script defer data-domain=
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>cli hyperlinks</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/cli/blob/master/R/cliapp-docs.R" class="external-link"><code>R/cliapp-docs.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/cli/blob/main/R/cliapp-docs.R" class="external-link"><code>R/cliapp-docs.R</code></a></small>
       <div class="d-none name"><code>links.Rd</code></div>
     </div>
 
@@ -175,10 +175,10 @@ via <code><a href="https://rdrr.io/r/base/Paren.html" class="external-link">{}</
     <h2 id="files">Files<a class="anchor" aria-label="anchor" href="#files"></a></h2>
     <p>The <code>.file</code> style now automatically creates a <code>file:</code> hyperlink.
 Because <code>file:</code> hyperlinks must contain an absolute path, cli tries to
-convert relative paths, and paths starting with <code>~</code> to absolute path.</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/cli_text.html">cli_text</a></span><span class="op">(</span><span class="st">"... edit your {.file ~/.Rprofile} file."</span><span class="op">)</span></span></code></pre><p></p></div>
+convert relative paths, and paths starting with <code>~</code> to aboslute path.</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/cli_text.html">cli_text</a></span><span class="op">(</span><span class="st">"... edit your {.file ~/.Rprofile} file.}"</span><span class="op">)</span></span></code></pre><p></p></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><div class="sourceCode"><pre>
-#&gt; ... edit your <span style="color: #268BD2;"><a href="file:///Users/gaborcsardi/.Rprofile">~/.Rprofile</a></span> file.
+#&gt; ... edit your <span style="color: #268BD2;"><a href="file:///Users/gaborcsardi/.Rprofile">~/.Rprofile</a></span> file.}
 </pre></div></div>
 <div class="section">
 <h3 id="link-text-1">Link text<a class="anchor" aria-label="anchor" href="#link-text-1"></a></h3>
